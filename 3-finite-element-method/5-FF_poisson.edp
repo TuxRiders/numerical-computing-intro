@@ -1,0 +1,22 @@
+load "iovtk"
+
+border C(t=0,2*pi){x=2*cos(t);y=sin(t);}
+mesh Th = buildmesh(C(50));
+func f = x*y;
+plot(Th, wait=true); // press Enter to continue
+
+fespace Vh(Th,P1);
+Vh u, v;
+
+problem Poisson(u,v,solver=LU) =
+		int2d(Th)(dx(u)*dx(v) + dy(u)*dy(v))
+		- int2d(Th)(f*v)
+		+ on(C, u=0);
+
+Poisson;
+plot(u, fill=true);
+cout << Vh.ndof << endl;
+
+int[int] Order = [1];
+string DataName = "u";
+savevtk("poisson.vtu", Th, u, dataname=DataName, order=Order);

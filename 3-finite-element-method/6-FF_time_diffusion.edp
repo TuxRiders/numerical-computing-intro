@@ -1,0 +1,64 @@
+load "iovtk"
+
+real L = 0.1;
+real R = 0.025;
+int meshSize = 60;
+int meshSizeIslet = 80;
+
+int wall = 1;
+
+real isletD = 2.e-6;
+real solD = 2.e-5;
+real dt = 0.05;
+real tEnd = 2.0;
+
+real initIslet = 1e-4;
+real initSol = 1e-5;
+
+int[int] orderOut = [1];
+
+mesh Mesh;
+{
+  border b1(t=0., 1.){x=L*t; y=0.; label=wall;};
+  border b2(t=0., 1.){x=L; y=L*t; label=wall;};
+  border b3(t=0., 1.){x=L-L*t; y=L; label=wall;};
+  border b4(t=0., 1.){x=0.; y=L-L*t; label=wall;};
+
+  border c1(t = 0 , 2 * pi) {x = L/2 + R * cos(t) ; y = L/2 + R * sin(t);};
+
+  Mesh = buildmesh(b1(meshSize) + b2(meshSize) + b3(meshSize) + b4(meshSize) + c1(meshSizeIslet));
+}
+// plot(Mesh);
+
+fespace SpaceP0(Mesh, P0);
+fespace SpaceP1(Mesh, P1);
+
+int islet = Mesh(L/2, L/2).region;
+int solution = Mesh(0.1, 0.1).region;
+
+SpaceP0 D = isletD * (region == islet) + solD * (region == solution);
+SpaceP1 oxy, oxyOld;
+
+oxyOld = initIslet * (region == islet) + initSol * (region == solution);
+
+varf oxyDiff(u, v) =
+  int2d(Mesh)(u * v / dt)
+  + int2d(Mesh)(oxyOld * v / dt)
+  + int2d(Mesh)(D * (dx(u) * dx(v) + dy(u) * dy(v)))
+;
+
+int count = 0;
+for (real t = 0; t <= tEnd; t+=dt)
+{
+  count++;
+
+  matrix A = oxyDiff(SpaceP1, SpaceP1, solver=sparsesolver);
+  real[int] b = oxyDiff(0, SpaceP1);
+
+  oxy[] = A^-1*b;
+  oxyOld = oxy;
+
+  cout << "t= " << t << endl;
+  // plot(oxy, fill=1, wait=1);
+  savevtk("diffusion-"+count+".vtu", Mesh, oxy, dataname="oxygen", order=orderOut);
+}

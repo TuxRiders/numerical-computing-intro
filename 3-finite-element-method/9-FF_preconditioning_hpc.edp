@@ -1,0 +1,61 @@
+// run with: $ mpirun -n 4 FreeFem++-mpi 9-FF_preconditioning_hpc.edp -v 0
+
+load "PETSc"
+macro dimension()2// EOM
+include "macro_ddm.idp"
+
+// verbosity = 0;
+real cpuTime, assemTime, solveTime;
+
+func Pk = P1;
+func f=x*y;
+
+bool writeFile = false;
+int meshSize = 4000; // a big mesh to evaluate performance, you may even want to increae it
+
+border C(t=0,2*pi){x=2*cos(t);y=sin(t);}
+mesh Th = buildmesh(C(meshSize));
+
+int dofBeforePartition; // just for displaying
+if (mpirank == 0)
+{
+  fespace VhDoF(Th, Pk);
+  dofBeforePartition = VhDoF.ndof;
+}
+
+fespace Vh(Th, Pk);
+
+Mat A;
+createMat(Th, A, Pk)
+
+varf weak(u, v) = intN(Th)(dx(u)*dx(v) + dy(u)*dy(v)) + int2d(Th)(f*v) + on(C,u=0);
+
+if (mpirank == 0) {cpuTime = mpiWtime();}
+
+matrix Loc = weak(Vh, Vh);
+real[int] b = weak(0, Vh);
+
+A = Loc;
+// set(A, sparams="-ksp_view -pc_type lu");
+// -pc_type gamg -ksp_type gmres -mat_type mpiaijcusparse
+// -pc_type hypre
+set(A, sparams="-ksp_view -pc_type hypre");
+
+Vh u;
+u[] = A^-1 * b;
+
+if (mpirank == 0) {solveTime = mpiWtime() - cpuTime;}
+
+if (writeFile)
+{
+	int[int] Order = [1];
+	string DataName = "u";
+	savevtk("poisson.vtu", Th, u, dataname=DataName, order=Order, append=false);
+}
+
+if (mpirank == 0)
+{
+  cout << "DOF Total: " << dofBeforePartition << endl;
+  cout << "DOF: " << Vh.ndof << endl;
+  cout << "Solver time: " << solveTime << " s" << endl;
+}

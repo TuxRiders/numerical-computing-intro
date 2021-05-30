@@ -1,0 +1,45 @@
+
+# Information about all exercises in the file 5-femsys.do.txt.
+# The information can be loaded into a Python list of dicts by
+#
+# f = open('.5-femsys.exerinfo', 'r')
+# exer = eval(f.read())
+#
+[{'answer': '',
+  'chapter_exercise': 1,
+  'chapter_no': 1,
+  'chapter_title': u'Variational forms for systems of PDEs',
+  'chapter_type': 'Chapter',
+  'closing_remarks': '',
+  'file': None,
+  'heading': u'=====',
+  'hints': [],
+  'keywords': None,
+  'label': u'femsys:exer:cooling:1',
+  'no': 1,
+  'solution': '',
+  'solution_file': None,
+  'subex': [],
+  'text': u'Consider the 1D Example of the fluid flow in a straight pipe \ncoupled to heat conduction in Section ref{femsys:cooling:1D}. \nThe example demonstrated fast convergence when using linear elements\nfor both variables $w$ and $T$. In this exercise we quantify the order \nof convergence. That is, we expect that\n!bt\n\\begin{align*}\n\\|w - w_e \\|_{L_2} &\\le C_w h^{\\beta_w}, \\\\\n\\|T - T_e \\|_{L_2} &\\le C_T h^{\\beta_T},\n\\end{align*}\n\n!et\nfor some $C_w$, $C_T$, $\\beta_w$ and $\\beta_T$. \nAssume therefore that\n!bt\n\\begin{align*}\n\\|w - w_e \\|_{L_2} &= C_w h^{\\beta_w},\\\\ \n\\|T - T_e \\|_{L_2} &= C_T h^{\\beta_T},\n\\end{align*}\n\n!et\nand estimate  $C_w$, $C_T$, $\\beta_w$ and $\\beta_T$.',
+  'title': u'Estimate order of convergence for the Cooling law',
+  'type': u'Problem',
+  'type_visible': True},
+ {'answer': '',
+  'chapter_exercise': 2,
+  'chapter_no': 1,
+  'chapter_title': u'Variational forms for systems of PDEs',
+  'chapter_type': 'Chapter',
+  'closing_remarks': '',
+  'file': None,
+  'heading': u'=====',
+  'hints': [],
+  'keywords': None,
+  'label': u'femsys:exer:cooling:2',
+  'no': 2,
+  'solution': '',
+  'solution_file': None,
+  'subex': [],
+  'text': u'Repeat Exercise ref{femsys:exer:cooling:1} with quadratic finite\nelements for both $w$ and $T$. \n\n# 2DO\n\n_Calculations to be continued..._',
+  'title': u'Estimate order of convergence for the Cooling law',
+  'type': u'Problem',
+  'type_visible': True}]
