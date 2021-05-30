@@ -1,0 +1,1091 @@
+
+!split
+========= Variational forms for systems of PDEs =========
+label{ch:femsys}
+
+Many mathematical models involve $m+1$ unknown functions
+governed by a system of $m+1$ differential equations. In abstract form
+we may denote the unknowns by $u^{(0)},\ldots,
+u^{(m)}$ and write the governing equations as
+
+!bt
+\begin{align*}
+\mathcal{L}_0(u^{(0)},\ldots,u^{(m)}) &= 0,\\
+&\vdots\\
+\mathcal{L}_{m}(u^{(0)},\ldots,u^{(m)}) &= 0,
+\end{align*}
+!et
+where $\mathcal{L}_i$ is some differential operator defining differential
+equation number $i$.
+
+======= Variational forms =======
+label{fem:sys:vform}
+
+There are basically two ways of formulating a variational form
+for a system of differential equations. The first method treats
+each equation independently as a scalar equation, while the other
+method views the total system as a vector equation with a vector function
+as unknown.
+
+===== Sequence of scalar PDEs formulation =====
+
+Let us start with the approach that treats one equation at a time.
+We multiply equation number $i$ by
+some test function $v^{(i)}\in V^{(i)}$ and integrate over the domain:
+
+!bt
+\begin{align}
+\int_\Omega \mathcal{L}^{(0)}(u^{(0)},\ldots,u^{(m)}) v^{(0)}\dx &= 0,
+label{fem:sys:vform:1by1a}\\
+&\vdots\\
+\int_\Omega \mathcal{L}^{(m)}(u^{(0)},\ldots,u^{(m)}) v^{(m)}\dx &= 0
+label{fem:sys:vform:1by1b}
+\tp
+\end{align}
+!et
+Terms with second-order derivatives may be integrated by parts, with
+Neumann conditions inserted in boundary integrals.
+Let
+
+!bt
+\[ V^{(i)} = \hbox{span}\{\baspsi_0^{(i)},\ldots,\baspsi_{N_i}^{(i)}\},\]
+!et
+such that
+
+!bt
+\[ u^{(i)} = B^{(i)}(\x) + \sum_{j=0}^{N_i} c_j^{(i)} \baspsi_j^{(i)}(\x),
+\]
+!et
+where $B^{(i)}$ is a boundary function to handle nonzero Dirichlet conditions.
+Observe that different unknowns may live in different spaces with different
+basis functions and numbers of degrees of freedom.
+
+From the $m$ equations in the variational forms we can derive
+$m$ coupled systems of algebraic equations for the
+$\Pi_{i=0}^{m} N_i$ unknown coefficients $c_j^{(i)}$, $j=0,\ldots,N_i$,
+$i=0,\ldots,m$.
+
+===== Vector PDE formulation =====
+
+The alternative method for deriving a variational form for a system of
+differential equations introduces a vector of unknown functions
+
+!bt
+\[ \u = (u^{(0)},\ldots,u^{(m)}),\]
+!et
+a vector of test functions
+
+!bt
+\[ \v = (v^{(0)},\ldots,v^{(m)}),\]
+!et
+with
+
+
+!bt
+\[ \u, \v \in  \V = V^{(0)}\times \cdots \times V^{(m)}
+\tp \]
+!et
+With nonzero Dirichlet conditions, we have a vector
+$\bm{B} = (B^{(0)},\ldots,B^{(m)})$ with boundary functions and then
+it is $\u - \bm{B}$ that lies in $\V$, not $\u$ itself.
+
+The governing system of differential equations is written
+
+!bt
+\[ \bm{\mathcal{L}}(\u ) = 0,\]
+!et
+where
+
+!bt
+\[ \bm{\mathcal{L}}(\u ) = (\mathcal{L}^{(0)}(\u),\ldots, \mathcal{L}^{(m)}(\u))
+\tp \]
+!et
+The variational form is derived by taking the inner product of
+the vector of equations and the test function vector:
+
+!bt
+\begin{equation}
+\int_\Omega \bm{\mathcal{L}}(\u )\cdot\v = 0\quad\forall\v\in\V\tp
+label{fem:sys:vform:inner}
+\end{equation}
+!et
+
+Observe that (ref{fem:sys:vform:inner}) is one scalar equation. To derive
+systems of algebraic equations for the unknown coefficients in the
+expansions of the unknown functions, one chooses $m$ linearly
+independent $\v$ vectors to generate $m$ independent variational forms
+from (ref{fem:sys:vform:inner}).  The particular choice $\v =
+(v^{(0)},0,\ldots,0)$ recovers (ref{fem:sys:vform:1by1a}), $\v =
+(0,\ldots,0,v^{(m)})$ recovers (ref{fem:sys:vform:1by1b}), and $\v =
+(0,\ldots,0,v^{(i)},0,\ldots,0)$ recovers the variational form number
+$i$, $\int_\Omega \mathcal{L}^{(i)} v^{(i)}\dx =0$, in
+(ref{fem:sys:vform:1by1a})-(ref{fem:sys:vform:1by1b}).
+
+======= A worked example =======
+label{fem:sys:uT:ex}
+
+We now consider a specific system of two partial differential equations
+in two space dimensions:
+
+!bt
+\begin{align}
+\mu \nabla^2 w &= -\beta,
+label{fem:sys:wT:ex:weq}\\
+\kappa\nabla^2 T &= - \mu ||\nabla w||^2
+\tp
+label{fem:sys:wT:ex:Teq}
+\end{align}
+!et
+The unknown functions $w(x,y)$ and $T(x,y)$ are defined in a domain $\Omega$,
+while $\mu$, $\beta$,
+and $\kappa$ are given constants. The norm in
+(ref{fem:sys:wT:ex:Teq}) is the standard Euclidean norm:
+
+!bt
+\[ ||\nabla w||^2 = \nabla w\cdot\nabla w = w_x^2 + w_y^2
+\tp \]
+!et
+
+The boundary conditions associated with
+(ref{fem:sys:wT:ex:weq})-(ref{fem:sys:wT:ex:Teq}) are $w=0$ on
+$\partial\Omega$ and $T=T_0$ on $\partial\Omega$.
+Each of the equations (ref{fem:sys:wT:ex:weq}) and (ref{fem:sys:wT:ex:Teq})
+needs one condition at each point on the boundary.
+
+The system (ref{fem:sys:wT:ex:weq})-(ref{fem:sys:wT:ex:Teq}) arises
+from fluid flow in a straight pipe, with the $z$ axis in the direction
+of the pipe. The domain $\Omega$ is a cross section of the pipe, $w$
+is the velocity in the $z$ direction, $\mu$
+is the viscosity of the fluid, $\beta$ is the pressure gradient along
+the pipe, $T$ is the temperature,
+and $\kappa$ is the heat conduction coefficient of the
+fluid. The equation (ref{fem:sys:wT:ex:weq}) comes from the Navier-Stokes
+equations, and (ref{fem:sys:wT:ex:Teq}) follows from the energy equation.
+The term $- \mu ||\nabla w||^2$ models heating of the fluid
+due to internal friction.
+
+Observe that the system (ref{fem:sys:wT:ex:weq})-(ref{fem:sys:wT:ex:Teq}) has
+only a one-way coupling: $T$ depends on $w$, but $w$ does not depend on
+$T$. Hence, we can solve (ref{fem:sys:wT:ex:weq}) with respect
+to $w$ and then (ref{fem:sys:wT:ex:Teq}) with respect to $T$.
+Some may argue that this is not a real system of PDEs, but just two scalar
+PDEs. Nevertheless, the one-way coupling
+is convenient when comparing different variational forms
+and different implementations.
+
+======= Identical function spaces for the unknowns =======
+
+Let us first apply the same function space $V$ for $w$ and $T$
+(or more precisely, $w\in V$ and $T-T_0 \in V$).
+With
+
+!bt
+\[ V = \hbox{span}\{\baspsi_0(x,y),\ldots,\baspsi_N(x,y)\}, \]
+!et
+we write
+
+!bt
+\begin{equation}
+w = \sum_{j=0}^N c^{(w)}_j \baspsi_j,\quad T = T_0 + \sum_{j=0}^N c^{(T)}_j
+\baspsi_j\tp
+label{fem:sys:wT:ex:sum}
+\end{equation}
+!et
+Note that $w$ and $T$ in (ref{fem:sys:wT:ex:weq})-(ref{fem:sys:wT:ex:Teq})
+denote the exact solution of the PDEs, while $w$ and $T$
+in (ref{fem:sys:wT:ex:sum}) are the discrete functions that approximate
+the exact solution. It should be clear from the context whether a
+symbol means the exact or approximate solution, but when we need both
+at the same time, we use a subscript e to denote the exact solution.
+
+===== Variational form of each individual PDE =====
+
+Inserting the expansions (ref{fem:sys:wT:ex:sum})
+in the governing PDEs, results in a residual in each equation,
+
+!bt
+\begin{align}
+R_w &= \mu \nabla^2 w + \beta,
+label{fem:sys:wT:ex:weq:R}\\
+R_T &= \kappa\nabla^2 T + \mu ||\nabla w||^2
+\tp
+label{fem:sys:wT:ex:Teq:R}
+\end{align}
+!et
+A Galerkin method demands $R_w$ and $R_T$ do be orthogonal to $V$:
+
+!bt
+\begin{align*}
+\int_\Omega R_w v \dx &=0\quad\forall v\in V,\\
+\int_\Omega R_T v \dx &=0\quad\forall v\in V
+\tp
+\end{align*}
+!et
+Because of the Dirichlet conditions, $v=0$ on $\partial\Omega$.
+We integrate the Laplace terms by parts and note that the boundary terms
+vanish since $v=0$ on $\partial\Omega$:
+
+!bt
+\begin{align}
+\int_\Omega \mu \nabla w\cdot\nabla v \dx &= \int_\Omega \beta v\dx
+\quad\forall v\in V,
+label{fem:sys:wT:ex:w:vf1}\\
+\int_\Omega \kappa \nabla T\cdot\nabla v \dx &= \int_\Omega \mu
+\nabla w\cdot\nabla w\, v\dx \quad\forall v\in V
+label{fem:sys:wT:ex:T:vf1}
+\tp
+\end{align}
+!et
+The equation $R_w$ in (ref{fem:sys:wT:ex:weq:R}) is linear
+in $w$, while the equation $R_T$ in (ref{fem:sys:wT:ex:Teq:R})
+is linear in $T$ and nonlinear in $w$.
+
+===== Compound scalar variational form =====
+
+The alternative way of deriving the variational from is to
+introduce a test vector function $\v\in\V = V\times V$ and take
+the inner product of $\v$ and the residuals, integrated over the domain:
+
+!bt
+\[ \int_{\Omega} (R_w, R_T)\cdot\v \dx = 0\quad\forall\v\in\V
+\tp \]
+!et
+With $\v = (v_0,v_1)$ we get
+
+!bt
+\[ \int_{\Omega} (R_w v_0 + R_T v_1) \dx = 0\quad\forall\v\in\V
+\tp \]
+!et
+Integrating the Laplace terms by parts results in
+
+!bt
+\begin{equation}
+\int_\Omega (\mu\nabla w\cdot\nabla v_0 + \kappa\nabla T\cdot\nabla v_1)\dx
+= \int_\Omega (\beta v_0 + \mu\nabla w\cdot\nabla w\, v_1)\dx,
+\quad\forall \v\in\V
+\tp
+label{fem:sys:wT:ex:wT:vf2}
+\end{equation}
+!et
+Choosing $v_0=v$ and $v_1=0$ gives the variational form
+(ref{fem:sys:wT:ex:w:vf1}), while $v_0=0$ and $v_1=v$ gives
+(ref{fem:sys:wT:ex:T:vf1}).
+
+With the inner product notation, $(p,q) = \int_\Omega pq\dx$, we
+can alternatively write (ref{fem:sys:wT:ex:w:vf1}) and
+(ref{fem:sys:wT:ex:T:vf1}) as
+
+!bt
+\begin{align*}
+ (\mu\nabla w,\nabla v) &= (\beta, v)
+\quad\forall v\in V,\\
+(\kappa \nabla T,\nabla v) &= (\mu\nabla w\cdot\nabla w, v)\quad\forall v\in V,
+\end{align*}
+!et
+or since $\mu$ and $\kappa$ are considered constant,
+
+!bt
+\begin{align}
+\mu (\nabla w,\nabla v) &= (\beta, v)
+\quad\forall v\in V,
+label{fem:sys:wT:ex:w:vf1i}\\
+\kappa(\nabla T,\nabla v) &= \mu(\nabla w\cdot\nabla w, v)\quad\forall v\in V
+label{fem:sys:wT:ex:T:vf1i}
+\tp
+\end{align}
+!et
+Note that the left-hand side of (ref{fem:sys:wT:ex:w:vf1i}) is
+again linear in $w$, the left-hand side
+of (ref{fem:sys:wT:ex:T:vf1i}) is linear in $T$
+and the nonlinearity of $w$ appears in the right-hand side
+of  (ref{fem:sys:wT:ex:T:vf1i})
+
+
+===== Decoupled linear systems =====
+
+The linear systems governing the coefficients $c_j^{(w)}$ and
+$c_j^{(T)}$, $j=0,\ldots,N$, are derived by inserting the
+expansions (ref{fem:sys:wT:ex:sum}) in (ref{fem:sys:wT:ex:w:vf1})
+and (ref{fem:sys:wT:ex:T:vf1}), and choosing $v=\baspsi_i$ for
+$i=0,\ldots,N$. The result becomes
+
+!bt
+\begin{align}
+\sum_{j=0}^N A^{(w)}_{i,j} c^{(w)}_j &= b_i^{(w)},\quad i=0,\ldots,N,
+label{fem:sys:wT:ex:linsys:w1}\\
+\sum_{j=0}^N A^{(T)}_{i,j} c^{(T)}_j &= b_i^{(T)},\quad i=0,\ldots,N,
+label{fem:sys:wT:ex:linsys:T1}\\
+A^{(w)}_{i,j} &= \mu(\nabla \baspsi_j,\nabla \baspsi_i),\\
+b_i^{(w)} &= (\beta, \baspsi_i),\\
+A^{(T)}_{i,j} &= \kappa(\nabla \baspsi_j,\nabla \baspsi_i),\\
+b_i^{(T)} &= \mu((\sum_j c^{(w)}_j\nabla\baspsi_j)\cdot (\sum_k
+c^{(w)}_k\nabla\baspsi_k), \baspsi_i)
+\tp
+\end{align}
+!et
+
+It can also be instructive to write the linear systems using matrices
+and vectors. Define $K$ as the matrix corresponding to the Laplace
+operator $\nabla^2$. That is, $K_{i,j} = (\nabla \baspsi_j,\nabla \baspsi_i)$.
+Let us introduce the vectors
+
+!bt
+\begin{align*}
+b^{(w)} &= (b_0^{(w)},\ldots,b_{N}^{(w)}),\\
+b^{(T)} &= (b_0^{(T)},\ldots,b_{N}^{(T)}),\\
+c^{(w)} &= (c_0^{(w)},\ldots,c_{N}^{(w)}),\\
+c^{(T)} &= (c_0^{(T)},\ldots,c_{N}^{(T)})\tp
+\end{align*}
+!et
+The system (ref{fem:sys:wT:ex:linsys:w1})-(ref{fem:sys:wT:ex:linsys:T1})
+can now be expressed in matrix-vector form as
+
+!bt
+\begin{align}
+\mu K c^{(w)} &= b^{(w)},\\
+\kappa K c^{(T)} &= b^{(T)}\tp
+\end{align}
+!et
+
+We can solve the first system for $c^{(w)}$, and then
+the right-hand side $b^{(T)}$ is known such that we can
+solve the second system for $c^{(T)}$. Hence, the
+decoupling of the unknowns $w$ and $T$ reduces the
+system of nonlinear PDEs to two linear PDEs.
+
+
+===== Coupled linear systems =====
+
+Despite the fact that $w$ can be computed first, without knowing $T$,
+we shall now pretend that $w$ and $T$ enter a two-way coupling such
+that we need to derive the
+algebraic equations as *one system* for all the unknowns
+$c_j^{(w)}$ and $c_j^{(T)}$, $j=0,\ldots,N$. This system is
+nonlinear in $c_j^{(w)}$ because of the $\nabla w\cdot\nabla w$ product.
+To remove this nonlinearity, imagine that we introduce an iteration
+method where we replace $\nabla w\cdot\nabla w$ by
+$\nabla w_{-}\cdot\nabla w$, $w_{-}$ being the $w$
+computed in the previous iteration. Then the term
+$\nabla w_{-}\cdot\nabla w$ is linear in $w$ since $w_{-}$ is
+known. The total linear system becomes
+
+!bt
+\begin{align}
+\sum_{j=0}^N A^{(w,w)}_{i,j} c^{(w)}_j + \sum_{j=0}^N A^{(w,T)}_{i,j} c^{(T)}_j
+&= b_i^{(w)},\quad i=0,\ldots,N,
+label{fem:sys:wT:ex:linsys:w2}\\
+\sum_{j=0}^N A^{(T,w)}_{i,j} c^{(w)}_j + \sum_{j=0}^N A^{(T,T)}_{i,j} c^{(T)}_j &= b_i^{(T)},\quad i=0,\ldots,N,
+label{fem:sys:wT:ex:linsys:T2}\\
+A^{(w,w)}_{i,j} &= \mu(\nabla \baspsi_j,\nabla \baspsi_i),\\
+A^{(w,T)}_{i,j} &= 0,\\
+b_i^{(w)} &= (\beta, \baspsi_i),\\
+A^{(w,T)}_{i,j} &= \mu((\nabla w_{-})\cdot\nabla\baspsi_j), \baspsi_i),\\
+A^{(T,T)}_{i,j} &= \kappa(\nabla \baspsi_j,\nabla \baspsi_i),\\
+b_i^{(T)} &= 0
+\tp
+\end{align}
+!et
+This system can alternatively be written in matrix-vector form as
+
+!bt
+\begin{align}
+\mu K c^{(w)} &= b^{(w)},\\
+L c^{(w)} + \kappa K c^{(T)} & =0,
+\end{align}
+!et
+with $L$ as the matrix from the $\nabla w_{-}\cdot\nabla$ operator:
+$L_{i,j} = A^{(w,T)}_{i,j}$. The matrix $K$ is $K_{i,j} =
+A^{(w,w)}_{i,j} = A^{(T,T)}_{i,j}$.
+
+The matrix-vector equations are often conveniently written in block form:
+
+!bt
+\[
+\left(\begin{array}{cc}
+\mu K & 0\\
+L & \kappa K
+\end{array}\right)
+\left(\begin{array}{c}
+c^{(w)}\\
+c^{(T)}
+\end{array}\right) =
+\left(\begin{array}{c}
+b^{(w)}\\
+0
+\end{array}\right),
+\]
+!et
+
+Note that in the general case where all unknowns enter all equations,
+we have to solve the compound system
+(ref{fem:sys:wT:ex:linsys:w2})-(ref{fem:sys:wT:ex:linsys:T2}) since
+then we cannot utilize the special property that
+(ref{fem:sys:wT:ex:linsys:w1}) does not involve $T$ and can be solved
+first.
+
+When the viscosity depends on the temperature, the
+$\mu\nabla^2w$ term must be replaced by $\nabla\cdot (\mu(T)\nabla w)$,
+and then $T$ enters the equation for $w$. Now we have a two-way coupling
+since both equations contain $w$ and $T$ and therefore
+must be solved simultaneously.
+The equation $\nabla\cdot (\mu(T)\nabla w)=-\beta$ is nonlinear,
+and if some iteration procedure is invoked, where we use a previously
+computed $T_{-}$ in the viscosity ($\mu(T_{-})$), the coefficient is known,
+and the equation involves only one unknown, $w$. In that case we are
+back to the one-way coupled set of PDEs.
+
+
+We may also formulate our PDE system as a vector equation. To this end,
+we introduce the vector of unknowns $\u = (u^{(0)},u^{(1)})$,
+where $u^{(0)}=w$ and $u^{(1)}=T$. We then have
+
+!bt
+\[
+\nabla^2 \u = \left(\begin{array}{cc}
+-{\mu}^{-1}{\beta}\\
+-{\kappa}^{-1}\mu \nabla u^{(0)}\cdot\nabla u^{(0)}
+\end{array}\right)\tp
+\]
+!et
+
+======= Different function spaces for the unknowns =======
+
+idx{mixed finite elements}
+
+It is easy to generalize the previous formulation to the case where
+$w\in V^{(w)}$ and $T\in V^{(T)}$, where $V^{(w)}$ and $V^{(T)}$
+can be different spaces with different numbers of degrees of freedom.
+For example, we may use quadratic basis functions for $w$ and linear
+for $T$. Approximation of the unknowns by different finite element
+spaces is known as *mixed finite element methods*.
+
+We write
+
+!bt
+\begin{align*}
+V^{(w)} &= \hbox{span}\{\baspsi_0^{(w)},\ldots,\baspsi_{N_w}^{(w)}\},\\
+V^{(T)} &= \hbox{span}\{\baspsi_0^{(T)},\ldots,\baspsi_{N_T}^{(T)}\}
+\tp
+\end{align*}
+!et
+The next step is to
+multiply (ref{fem:sys:wT:ex:weq}) by a test function $v^{(w)}\in V^{(w)}$
+and (ref{fem:sys:wT:ex:Teq}) by a $v^{(T)}\in V^{(T)}$, integrate by
+parts and arrive at
+
+!bt
+\begin{align}
+\int_\Omega \mu \nabla w\cdot\nabla v^{(w)} \dx &= \int_\Omega \beta v^{(w)}\dx
+\quad\forall v^{(w)}\in V^{(w)},
+label{fem:sys:wT:ex:w:vf3}\\
+\int_\Omega \kappa \nabla T\cdot\nabla v^{(T)} \dx &= \int_\Omega \mu
+\nabla w\cdot\nabla w\, v^{(T)}\dx \quad\forall v^{(T)}\in V^{(T)}
+label{fem:sys:wT:ex:T:vf3}
+\tp
+\end{align}
+!et
+
+The compound scalar variational formulation applies a test vector function
+$\v = (v^{(w)}, v^{(T)})$ and reads
+
+!bt
+\begin{equation}
+\int_\Omega (\mu\nabla w\cdot\nabla v^{(w)} +
+\kappa\nabla T\cdot\nabla v^{(T)})\dx
+= \int_\Omega (\beta v^{(w)} + \mu\nabla w\cdot\nabla w\, v^{(T)})\dx,
+label{fem:sys:wT:ex:wT:vf3}
+\end{equation}
+!et
+valid $\forall \v\in\V = V^{(w)}\times V^{(T)}$.
+
+As earlier, we may decoupled the system in terms
+of two linear PDEs as we did with
+(ref{fem:sys:wT:ex:linsys:w1})-(ref{fem:sys:wT:ex:linsys:T1})
+or linearize the coupled system by introducing the previous
+iterate $w_{-}$ as in
+(ref{fem:sys:wT:ex:linsys:w2})-(ref{fem:sys:wT:ex:linsys:T2}).
+However, we need to distinguish between $\baspsi_i^{(w)}$
+and $\baspsi_i^{(T)}$, and the range in the sums over $j$
+must match the number of degrees of freedom in the spaces $V^{(w)}$
+and $V^{(T)}$. The formulas become
+
+!bt
+\begin{align}
+\sum_{j=0}^{N_w} A^{(w)}_{i,j} c^{(w)}_j &= b_i^{(w)},\quad i=0,\ldots,N_w,
+label{fem:sys:wT:ex:linsys:w1:mixed}\\
+\sum_{j=0}^{N_T} A^{(T)}_{i,j} c^{(T)}_j &= b_i^{(T)},\quad i=0,\ldots,N_T,
+label{fem:sys:wT:ex:linsys:T1:mixed}\\
+A^{(w)}_{i,j} &= \mu(\nabla \baspsi_j^{(w)},\nabla \baspsi_i^{(w)}),\\
+b_i^{(w)} &= (\beta, \baspsi_i^{(w)}),\\
+A^{(T)}_{i,j} &= \kappa(\nabla \baspsi_j^{(T)},\nabla \baspsi_i^{(T)}),\\
+b_i^{(T)} &= \mu(\sum_{j=0}^{N_w} c^{(w)}_j\nabla\baspsi_j^{(w)})\cdot (\sum_{k=0}^{N_w}
+c^{(w)}_k\nabla\baspsi_k^{(w)}) , \baspsi_i^{(T)})
+\tp
+\end{align}
+!et
+
+In the case we formulate one compound linear system involving
+both $c^{(w)}_j$, $j=0,\ldots,N_w$, and $c^{(T)}_j$, $j=0,\ldots,N_T$,
+(ref{fem:sys:wT:ex:linsys:w2})-(ref{fem:sys:wT:ex:linsys:T2})
+becomes
+
+!bt
+\begin{align}
+\sum_{j=0}^{N_w} A^{(w,w)}_{i,j} c^{(w)}_j + \sum_{j=0}^{N_T} A^{(w,T)}_{i,j} c^{(T)}_j
+&= b_i^{(w)},\quad i=0,\ldots,N_w,
+label{fem:sys:wT:ex:linsys:w2b}\\
+\sum_{j=0}^{N_w} A^{(T,w)}_{i,j} c^{(w)}_j + \sum_{j=0}^{N_T} A^{(T,T)}_{i,j} c^{(T)}_j &= b_i^{(T)},\quad i=0,\ldots,N_T,
+label{fem:sys:wT:ex:linsys:T2b}\\
+A^{(w,w)}_{i,j} &= \mu(\nabla \baspsi_j^{(w)},\nabla \baspsi_i^{(w)}),\\
+A^{(w,T)}_{i,j} &= 0,\\
+b_i^{(w)} &= (\beta, \baspsi_i^{(w)}),\\
+A^{(w,T)}_{i,j} &= \mu (\nabla w_{-}\cdot\nabla\baspsi_j^{(w)}), \baspsi_i^{(T)}),\\
+A^{(T,T)}_{i,j} &= \kappa(\nabla \baspsi_j^{(T)},\nabla \baspsi_i^{(T)}),\\
+b_i^{(T)} &= 0
+\tp
+\end{align}
+!et
+Here, we have again performed a linearization by employing a previous iterate $w_{-}$.
+The corresponding block form
+
+!bt
+\[
+\left(\begin{array}{cc}
+\mu K^{(w)} & 0\\
+L & \kappa K^{(T)}
+\end{array}\right)
+\left(\begin{array}{c}
+c^{(w)}\\
+c^{(T)}
+\end{array}\right) =
+\left(\begin{array}{c}
+b^{(w)}\\
+0
+\end{array}\right),
+\]
+!et
+has square and rectangular block matrices: $K^{(w)}$ is $N_w\times N_w$,
+$K^{(T)}$ is $N_T\times N_T$, while $L$ is $N_T\times N_w$,
+
+======= Computations in 1D =======
+label{femsys:cooling:1D}
+# 2DO
+# show analytical solution in [0,H]
+# use global polynomials (x^i(H-x)), exact sol
+# compute uncoupled and coupled discrete systems, N=4
+# note: coupled can use exact w_{-}
+# P1-P1, n elements, 2 elements as special case
+# uncoupled and coupled (can use exercises for variants)
+# P1 for w, P2 for T or P4 for T
+# similar computations for circle can be done as project
+# extensions to time-dep versions in projects
+# any geophysical applications? flowing ice sheet ("half channel") and
+# temp gradient through, check with Jed
+# the time-dependent system can be introduced in diffusion and
+# a finite difference scheme can be devised
+
+We can reduce the system (ref{fem:sys:wT:ex:weq})-(ref{fem:sys:wT:ex:Teq})
+to one space dimension, which corresponds to flow in a channel between
+two flat plates. Alternatively, one may consider flow in a circular
+pipe, introduce cylindrical coordinates, and utilize the radial symmetry
+to reduce the equations to a one-dimensional problem in the radial
+coordinate. The former model becomes
+
+!bt
+\begin{align}
+\mu w_{xx} &= -\beta,
+label{fem:sys:wT:ex1D:weq}\\
+\kappa T_{xx} &= - \mu w_x^2,
+label{fem:sys:wT:ex1D:Teq}
+\end{align}
+!et
+while the model in the radial coordinate $r$ reads
+
+!bt
+\begin{align}
+\mu\frac{1}{r}\frac{d}{dr}\left( r\frac{dw}{dr}\right) &= -\beta,
+label{fem:sys:wT:ex1Dr:weq}\\
+\kappa \frac{1}{r}\frac{d}{dr}\left( r\frac{dT}{dr}\right) &= - \mu \left(
+\frac{dw}{dr}\right)^2
+\tp
+label{fem:sys:wT:ex1Dr:Teq}
+\end{align}
+!et
+
+The domain for (ref{fem:sys:wT:ex1D:weq})-(ref{fem:sys:wT:ex1D:Teq})
+is $\Omega = [0,H]$, with boundary conditions $w(0)=w(H)=0$ and
+$T(0)=T(H)=T_0$. For
+(ref{fem:sys:wT:ex1Dr:weq})-(ref{fem:sys:wT:ex1Dr:Teq}) the domain
+is $[0,R]$ ($R$ being the radius of the pipe) and the boundary
+conditions are $du/dr = dT/dr =0$ for $r=0$, $u(R)=0$, and $T(R)=T_0$.
+
+The exact solutions, $w_e$ and $T_e$,  to (ref{fem:sys:wT:ex1D:weq})
+and (ref{fem:sys:wT:ex1D:Teq}) are computed
+as
+!bt
+\begin{align*}
+w_{e,x} &= - \int \frac{\beta}{\mu} \dx + C_w, \\
+w_e &= \int w_{e,x} \dx + D_w, \\
+T_{e,x} &= - \int \mu w_{e,x}^2 \dx + C_T,\\
+T_e &= \int T_{e,x} \dx + D_T, \\
+\end{align*}
+!et
+where we determine the constants $C_w$, $D_w$, $C_T$, and $D_T$
+by the boundary conditions $w(0)=w(H)=0$ and
+$T(0)=T(H)=T_0$. The calculations
+may be performed in  `sympy` as
+!bc pycod
+import sympy as sym
+
+x, mu, beta, k, H, C, D, T0 = sym.symbols("x mu beta k H C D T0")
+wx = sym.integrate(-beta/mu, (x, 0, x)) + C
+w = sym.integrate(wx, x) + D
+s = sym.solve([w.subs(x, 0)-0,  # x=0 condition
+               w.subs(x,H)-0],  # x=H condition
+               [C, D])       # unknowns
+w = w.subs(C, s[C]).subs(D, s[D])
+w = sym.simplify(sym.expand(w))
+
+Tx = sym.integrate(-mu*sym.diff(w,x)**2, x) + C
+T = sym.integrate(Tx, x) + D
+s = sym.solve([T.subs(x, 0)-T0,  # x=0 condition
+               T.subs(x, H)-T0],  # x=H condition
+               [C, D])       # unknowns
+T = T.subs(C, s[C]).subs(D, s[D])
+T = sym.simplify(sym.expand(T))
+!ec
+We find that the solutions are
+!bt
+\begin{align*}
+w_e(x) &= \frac{\beta x}{2 \mu} \left(H - x\right), \\
+T_e(x) &= \frac{\beta^{2}}{\mu} \left(\frac{H^{3} x}{24}  - \frac{H^{2}}{8} x^{2} + \frac{H}{6} x^{3} - \frac{ x^{4}}{12}\right)  + T_{0} \tp
+\end{align*}
+!et
+
+The figure ref{femsys:cooling:w:plot} shows $w$ computed by the finite element method using the  decoupled
+approach with P1 elements, 
+that is; implementing (ref{fem:sys:wT:ex:linsys:w1}). The analytical solution $w_e$ is a quadratic
+polynomial.  The linear finite elements result in a poor approximation on the
+coarse meshes, $N=2$ and $N=4$, but the approximation 
+improves fast and already at $N=8$ the 
+approximation appears adequate. 
+The figure ref{femsys:cooling:w:plot} shows the approximation of $T$ and also here
+we see that the fourth order polynomial is poorly approximated at coarse resolution, but
+that the approximation quickly improves.
+
+
+FIGURE: [fig/cooling_w, width=800] The solution $w$ of (ref{fem:sys:wT:ex1D:weq}) with $\beta=\mu=1$ for different mesh resolutions. label{femsys:cooling:w:plot}
+
+The figure ref{femsys:cooling:T:plot} shows $T$ for different resolutions. The same tendency is apparent
+although the coarse grid solutions are worse for $T$ than for $w$. The solutions at $N=16$ and $N=32$, however, 
+appear almost identical. 
+
+
+FIGURE: [fig/cooling_T, width=800] The solution $T$ of (ref{fem:sys:wT:ex1D:Teq}) for $\kappa=H=1$. label{femsys:cooling:T:plot}
+
+Below we include the code used to solve this problem in FEniCS and plot it using `matplotlib`.  
+
+!bc pycod
+def boundary(x):
+  return x[0] < DOLFIN_EPS or x[0] > 1.0 - DOLFIN_EPS
+
+from dolfin import *
+import matplotlib.pyplot as plt
+
+Ns = [2, 4, 8, 16, 32]
+for N in Ns: 
+    mesh = UnitIntervalMesh(N)
+    V = FunctionSpace(mesh, "Lagrange", 1)
+    u = TrialFunction(V)
+    v = TestFunction(V) 
+
+    beta = Constant(1)
+    mu = Constant(1) 
+
+    bc = DirichletBC(V, Constant(0), boundary)
+    a = mu*inner(grad(u), grad(v))*dx 
+    L = -beta*v*dx 
+
+    w = Function(V)
+    solve(a == L, w, bc)
+
+    T0 = Constant(1)
+    kappa = Constant(1)
+    bc = DirichletBC(V, T0, boundary)
+    a = kappa*inner(grad(u), grad(v))*dx 
+    L = -mu*inner(grad(w), grad(w))*v*dx 
+
+    T = Function(V)
+    solve(a == L, T, bc)
+
+    x = V.tabulate_dof_coordinates()
+    plt.plot(x, T.vector().get_local())
+    plt.legend(["N=%d"%N for N in Ns], loc="upper left")
+plt.show()
+!ec
+
+
+Most of the FEniCS code should be familiar to the reader, but 
+we remark that we use the function `V.tabulate_dof_coordinates()` to obtain the coordinates of the nodal points. This is a general
+function that works for any finite element implemented in 
+FEniCS and also in a parallel setting. 
+
+The calculations for (ref{fem:sys:wT:ex1Dr:weq})
+and (ref{fem:sys:wT:ex1Dr:Teq}) are similar.
+The `sympy` code
+!bc pycod
+import sympy as sym
+
+r, R, mu, beta, C, D, T0 = sym.symbols("r R mu beta C D T0")
+rwr = sym.integrate(-(beta/mu)*r, r) + C
+w = sym.integrate(rwr/r, r) + D
+s = sym.solve([sym.diff(w,r).subs(r, 0)-0,  # r=0 condition
+               w.subs(r,R)-0],              # r=R condition
+               [C, D])                      # unknowns
+w = w.subs(C, s[C]).subs(D, s[D])
+w = sym.simplify(sym.expand(w))
+
+rTr = sym.integrate(-mu*sym.diff(w,r)**2*r, r) + C
+T = sym.integrate(rTr/r, r) + D
+s = sym.solve([sym.diff(T,r).subs(r, 0)-T0,  # r=0 condition
+               T.subs(r, R)-T0],             # r=R condition
+               [C, D])                       # unknowns
+T = T.subs(C, s[C]).subs(D, s[D])
+T = sym.simplify(sym.expand(T))
+!ec
+and we obtain the solutions
+!bt
+\begin{align*}
+w(r) &= \frac{\beta \left(R^{2} - r^{2}\right)}{4 \mu}, \\
+T(r) &= \frac{1}{64 \mu} \left(R^{4} \beta^{2} + 64 T_{0} \mu - \beta^{2} r^{4}\right)\tp
+\end{align*}
+!et
+
+The radial solution corresponds to the analytical solution in 3D and is very useful for the purpose 
+of verifying the code of multi-physics flow problems. 
+
+
+===== Another example in 1D =====
+
+label{fem:sys:up:1D}
+Consider the problem
+!bt
+\begin{align}
+label{femsys:varcoeff:1D}
+ -(a u')' &= 0,\\
+u(0) &= 0,\\
+u(1) &= 1 \tp
+\end{align}
+!et
+For any scalar $a$ (larger than 0), we may easily verify that the solution is $u(x)=x$.
+In many applications, such as for example porous media flow
+or heat conduction, the parameter $a$ contains a jump that represents
+the transition from one material to another. Hence,
+let us consider the problem where $a$ is on the following
+form
+!bt
+\[
+a(x) = \left\{ \begin{array}{ll}
+            1 & \mbox{  if } x\le\half, \\
+            a_0 &  \mbox{  if } x>\half\tp
+           \end{array} \right.
+\]
+!et
+Notice that for such an $a(x)$, the equation (ref{femsys:varcoeff:1D}) does not necessarily make
+sense because we cannot differentiate $a(x)$. Strictly speaking $a'(x)$ would
+be a Dirac's delta function in $x=\half$, that is; $a'(x)$ is $\infty$ at $x=\half$ and zero
+everywhere else.
+
+Hand-calculations do however show that we may be able to
+compute the solution. Integrating (ref{femsys:varcoeff:1D})
+yields the expression
+!bt
+\[
+-(a u') = C
+\]
+!et
+A trick now is to divide by $a(x)$ on both sides to obtain
+!bt
+\[
+- u' = \frac{C}{a}
+\]
+!et
+and since $a$ is a piecewise constant 
+!bt
+\[
+u(x) = \frac{C}{a(x)} x + D
+\]
+!et
+The boundary conditions demand that $u(0) = 0$, which means that $D=0$. 
+In order to obtain an expression for $u(1)=1$ 
+we note that $u$ is 
+a piecewise linear function 
+with $u' = C$ for $x\in(0,0.5)$
+and $u'=\frac{C}{a_0}$ for $x\in(0.5,1)$. 
+We may therefore express $u(1)$ in terms of 
+$u(0)$ plus the derivatives at the midpoints of the two intervals, i.e.,  
+$u(1) = u(0) + \half u'(0.25)  + \half u'(0.75)  = 0.5 (C + \frac{C}{a_0}) = 1$. 
+In other words, $C=\frac{2 a_0}{a_0 +1}$ and the analytical solution becomes
+!bt
+\begin{equation}
+label{varcoeff:analytical:solution}
+u_e(x) = 
+\left\{ \begin{array}{ll}
+\frac{2 a_0}{a_0 +1}   x & \mbox{ for } 0 < x \le 0.5 \\
+\frac{2}{a_0 +1} x + \frac{a_0-1}{a_0 +1}  & \mbox{ for } 0.5 < x \le 1
+\end{array}
+\right. 
+\end{equation}
+!et
+
+
+
+The variational problem derived from a standard Galerkin method reads: Find $u$ such that
+!bt
+\[
+\int_{\Omega} a u' v' \, \dx = \int_\Omega f v dx + \int_{\partial \Omega} a u' v \ds
+\]
+!et
+
+We observe that in this variational formulation, the discontinuity of $a$ does not cause any problem
+as the differentiation is moved from $a$ (and $u'$) to $v$ by using integration by parts (or Green's lemma).
+As earlier, to include the boundary conditions,  we may use a boundary function such that 
+!bt
+\[ u(x) = B(x) + \sum_{j\in\If}c_j\baspsi_j(x) \]
+!et
+and further letting  $v=\baspsi_i(x)$,  the corresponding linear system is $\sum_j A_{i,j}c_j=b_i$
+with
+
+
+!bt
+\begin{align*}
+A_{i,j} &= (a \baspsi_j', \baspsi_i') = \int_{\Omega} a(x) \baspsi_j'(x)
+\baspsi_i'(x)\dx,\\
+b_i &= -\int_{\Omega} a B' v' \dx + \int_{\partial \Omega} a \frac{\partial B'}{\partial n} v  \ds \tp
+\end{align*}
+!et
+
+In FEniCS, the linear algebra approach is used and the boundary conditions are inserted 
+in the element matrix as described in Section ref{fem:bc:elmat:mod}. 
+The solution of the problem is shown in Figure ref{femsys:varcoeff:1D:Galerkin:plotu} at different mesh resolutions.
+The analytical solution in (ref{varcoeff:analytical:solution}) is a piecewise polynomial, linear
+for $x$ in $[0,\half)$ and $(\half,1]$ and it seems that the numerical strategy gives a good approximation
+of the solution.
+The FEniCS program generating the plot is
+
+@@@CODE src/darcy1D.py fromto: from fenics@plt.show()
+
+Figure ref{femsys:varcoeff:1D:Galerkin:plotu} shows the solution $u$. Clearly we have a good approximation already on a mesh with just two elements
+as the solution is piecewise linear as found in (ref{varcoeff:analytical:solution}).  
+
+FIGURE: [fig/darcy_a1D, width=800] Solution of the Darcy problem with discontinuous coefficient for different number of elements $N$. label{femsys:varcoeff:1D:Galerkin:plotu}
+
+The flux $a u'$ is often a quantity of interest. Because the flux involves differentiation with respect
+to $x$ we do not have an direct access to it and 
+have to compute it. A natural approach is to take the Galerkin approximation,
+that is we seek a $w \approx a u'$ on the form  $w=\sum_{j\in\If} d_j\baspsi_j$ and
+require  Galerkin orthogonality. In other words, we require 
+that $w-a u'$ is orthogonal to $\{\baspsi_i\}$. This is done by solving
+the linear system  $\sum_j M_{i,j}d_j=b_i$ with
+
+
+!bt
+\begin{align*}
+M_{i,j} &= (a \baspsi_j, \baspsi_i) = \int_{\Omega} a(x) \baspsi_j(x) \baspsi_i(x)\dx,\\
+b_i &= (a u',\baspsi_i)=  \int_\Omega a(x)  \sum_j c_j\baspsi_j'(x) \dx\tp
+\end{align*}
+!et
+
+Computing the flux by taking the Galerkin projection as described in Section ref{fem:approx:fenics:2D}
+is implemented in the `project` method in FEniCS and is obtained as
+!bc pycod
+aux = project(-a_coeff*u.dx(0), V)
+!ec
+As shown in Figure ref{femsys:varcoeff:1D:Galerkin:plotsux} this 
+approach does not produce a good approximation of the flux.
+Moreover, the approximate solution does not seem to 
+improve close to the jump as the mesh is refined. The problem is that we try to approximate a 
+discontinuous function with a continuous basis and this may often cause
+spurious oscillations. In this case, we may fix the problem by alternative post-processing 
+methods for calculating the flux. For instance, we may project onto piecewise constant 
+functions instead. However, in general, we would still loose accuracy as the first order derivative involved
+in the flux calculation lower the order of accuracy by one.     
+
+FIGURE: [fig/darcy_adx1D, width=800] The corresponding flux $a u'$ for the Darcy problem with discontinuous coefficient for different number of elements $N$. label{femsys:varcoeff:1D:Galerkin:plotsux}
+
+
+
+An alternative method that makes the flux approximation $w$ more accurate than
+the underlying $u$ is an equivalent form
+of (ref{femsys:varcoeff:1D}) where the flux is one of the unknowns.
+This formulation is usually called the mixed formulation. 
+The equations reads:
+!bt
+\begin{align}
+\frac{\partial w}{\partial x} &= 0,
+label{fem:sys:up:1D:eq:mass}\\
+w &=-a\frac{\partial u}{\partial x}
+label{fem:sys:up:1D:eq:Darcy}
+\tp
+\end{align}
+!et
+Equation (ref{fem:sys:up:1D:eq:Darcy}) is Darcy's law for a porous media. 
+A straightforward calculation shows that inserting (ref{fem:sys:up:1D:eq:Darcy}) into (ref{fem:sys:up:1D:eq:mass}) yields
+the equation (ref{femsys:varcoeff:1D}). We also note that we have replaced the second order differential
+equation with a system of two first order differential equations.
+
+It is common to swap the order of the equations and also divide equation
+(ref{fem:sys:up:1D:eq:Darcy}) by $a$. 
+Then variational formulation of the problem, having the two unknowns $w$ and $u$
+and corresponding test functions  $v^{(w)}$ and $v^{(u)}$,
+ becomes
+!bt
+\begin{align}
+label{fem:sys:up:1D:eq:Darcy:var}
+\int_\Omega \frac{1}{a} w v^{(w)} + \frac{\partial u}{\partial x} v^{(w)} \dx &=0, \\
+label{fem:sys:up:1D:eq:mass:var}
+\int_\Omega \frac{\partial w}{\partial x} v^{(u)} \dx &= 0\tp
+\end{align}
+!et
+To obtain a suitable variation formulation we perform integration by parts on
+the last term of (ref{fem:sys:up:1D:eq:Darcy:var}) to 
+obtain
+!bt
+\[
+\int_\Omega  \frac{\partial u}{\partial x} v^{(w)} \dx  = 
+- \int_\Omega  u \frac{\partial v^{(w)}}{\partial x} \dx 
++ \int_{\partial\Omega}  u v^{(w)} \dx
+\]
+!et
+Notice that the Dirichlet conditions of 
+(ref{femsys:varcoeff:1D}) becomes a Neumann condition in this mixed formulation. 
+Vice versa, a Neumann condition in (ref{femsys:varcoeff:1D}) 
+becomes a Dirichlet condition in the mixed case. 
+
+To obtain a linear system of equation, let 
+$u=\sum_{j\in\If} c_j\baspsi_j^{(u)}$,
+$w=\sum_{j\in\If} c_j\baspsi_j^{(w)}$,
+$v^{(u)} =  \baspsi_i^{(u)}$, and
+$v^{(w)} =  \baspsi_i^{(w)}$. We obtain the following system
+of linear equations
+!bt
+\[
+A\, c = \left[ \begin{array}{cc} A^{(w,w)} & A^{(w,u)}\\ A^{(u,w)} & 0 \end{array} \right]
+\left[ \begin{array}{c} c^{(w)} \\ c^{(u)} \end{array} \right] =
+\left[ \begin{array}{c} b^{(w)} \\ b^{(u)} \end{array} \right]
+= b,
+\]
+!et
+where
+!bt
+\begin{align*}
+A^{(w,w)}_{i,j} &=  \int_{\Omega} \frac{1}{a(x)} \baspsi^{(w)}_j(x) \baspsi^{(w)}_i(x)\dx & i,j = 0\ldots N^{(w)}-1, \\
+A^{(w,u)}_{i,j} &=  -\int_{\Omega} \frac{\partial}{\partial x} \baspsi^{(w)}_j(x) \baspsi^{(u)}_i(x)\dx &  i=0\ldots N^{(w)}-1, j=0, \ldots N^{(u)}-1, \\
+A^{(u,w)}_{i,j} &= -A^{(w,u)}_{j,i}, \\
+b^{(w)}_i &= \int_\Omega a B \frac{\partial}{\partial x}\baspsi^{(w)}_i) - [a B\baspsi^{(w)}_i]^1_0, \\
+b^{(u)}_i &= (0,\baspsi^{(u)}_i)= 0 \tp
+\end{align*}
+!et
+
+
+
+
+FIGURE: [fig/darcy_a1D_mx, width=800] Solution of the mixed Darcy problem with discontinuous coefficient for different number of elements $N$. label{femsys:varcoeff:1D:Galerkin:plotu:mx}
+
+FIGURE: [fig/darcy_adx1D_mx, width=800] The corresponding flux $a u'$ for the mixed Darcy problem with discontinuous coefficient for different number of elements $N$. label{femsys:varcoeff:1D:Galerkin:plotsux:mx}
+
+
+In Figure ref{femsys:varcoeff:1D:Galerkin:plotu:mx} the solution 
+$u$ obtained by solving the of system  (ref{fem:sys:up:1D:eq:Darcy})
+using piecewise linear elements for $w$ and piecewise constants for $u$. 
+Clearly, $u$ converges towards the analytical solution as the mesh 
+is refined, although in a staggered way. In Figure ref{femsys:varcoeff:1D:Galerkin:plotsux:mx}
+we display the flux $a u'$. The flux appears to be a constant  
+as predicted by our analytical solution (ref{varcoeff:analytical:solution})
+and in our case $a_0=0.1$ which makes $C=\frac{2 a_0}{a_0 +1} \approx 0.18$, which is
+quite close to the estimate provided in  Figure ref{femsys:varcoeff:1D:Galerkin:plotsux:mx}.
+
+
+It is interesting to note that the standard Galerkin formulation
+of the problem results in a perfect approximation of $u$, while
+the flux $-a u'$ is badly represented. On the other hand,
+for the mixed formulation, the flux is well approximated but
+$u$ is approximated only to first order yielding a staircase
+approximation. These observations naturally suggest
+that we should employ P1 approximation of both $u$ and
+its flux. We should then get a perfect approximation of
+both unknowns. This is however not possible. The
+linear system we obtain with P1 elements for both variables is singular.
+
+This example shows that when we are solving systems of PDEs with
+several unknowns, we can not choose the approximation arbitrary.
+The polynomial spaces of the different unknowns have to be compatible
+and the accuracy of the different unknowns depend on each other. 
+We will not discuss the reasons for the need of compatibility here
+as it is rather theoretical and beyond the scope of this book. Instead we 
+refer the interested reader to cite{brezzi2012mixed, Brenner_Scott, Braess, Silvester_et_al_2015}.
+
+
+The complete code for the mixed Darcy example is 
+
+@@@CODE src/darcy1D_mixed.py fromto: for N in Ns@plt.show() 
+
+Here, we remark that we in order to plot the discontinuous solution
+properly we re-sampled the solution on a fine mesh. In general for discontinuous elements one should be careful with the way the solution is plotted. Interpolating into a continuous field may not be desirable.  
+
+======= Exercises =======
+
+===== Problem: Estimate order of convergence for the Cooling law =====
+label{femsys:exer:cooling:1}
+Consider the 1D Example of the fluid flow in a straight pipe 
+coupled to heat conduction in Section ref{femsys:cooling:1D}. 
+The example demonstrated fast convergence when using linear elements
+for both variables $w$ and $T$. In this exercise we quantify the order 
+of convergence. That is, we expect that
+!bt
+\begin{align*}
+\|w - w_e \|_{L_2} &\le C_w h^{\beta_w}, \\
+\|T - T_e \|_{L_2} &\le C_T h^{\beta_T},
+\end{align*}
+!et  
+for some $C_w$, $C_T$, $\beta_w$ and $\beta_T$. 
+Assume therefore that
+!bt
+\begin{align*}
+\|w - w_e \|_{L_2} &= C_w h^{\beta_w},\\ 
+\|T - T_e \|_{L_2} &= C_T h^{\beta_T},
+\end{align*}
+!et  
+and estimate  $C_w$, $C_T$, $\beta_w$ and $\beta_T$.
+
+
+===== Problem: Estimate order of convergence for the Cooling law =====
+label{femsys:exer:cooling:2}
+Repeat Exercise ref{femsys:exer:cooling:1} with quadratic finite
+elements for both $w$ and $T$. 
+
+# 2DO
+
+_Calculations to be continued..._
+
+
+
+# #ifdef 2DO
+ * why we don't use least squares for finite elements (exercise?)
+ * write more about `fe_approx1D_numint`, at least link to the file
+ * read what we have written about 2D
+
+!split
+======= Examples on 1D finite element computations =======
+
+
+Other ways of treating boundary conditions.
+
+Next: non-uniform partition, give result and make exercise.
+
+Next: variable coefficient, numerical integration
+
+Then: old Exercise 2.7 symbolic when the software is ready :-)
+
+Compulsory exercise: wave equation with P1 and P2 elements.
+# #endif

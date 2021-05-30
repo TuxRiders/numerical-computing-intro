@@ -1,0 +1,10 @@
+real L = 5;
+real n = 20;
+
+mesh Mesh = square(n, n, [L*x, L*y]);
+plot(Mesh, wait=1); // press Enter to continue when displayed
+
+fespace SpaceP1(Mesh, P1); // can be P0, P2, ...
+
+SpaceP1 u = sin(x) + cos(y);
+plot(u, fill=1);

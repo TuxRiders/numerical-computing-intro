@@ -1,0 +1,29 @@
+verbosity=0;
+
+real Dx = .02, R = 1.;
+real N=2000.;
+real omega = 0.5;
+
+border C(t=0.,2.*pi){x=R*cos(t);y=R*sin(t);label=1;};
+mesh Mesh = buildmesh(C(floor(2.*pi*R/Dx)));
+
+fespace SpaceP1(Mesh,P1);
+
+macro Grad(u)[dx(u),dy(u)]//
+
+SpaceP1 u, u0 = 0, v;
+SpaceP1 uK = u0;
+real errorL2;
+
+problem probdup(u,v) = - int2d(Mesh)(Grad(u)'*Grad(v))
+                       - int2d(Mesh) ( u*uK*v )
+                       + on(1, u=N);
+
+for (int i = 0; i <= 1000; i++)
+{
+    probdup;
+    u = omega * u + (1 - omega) * uK;
+    errorL2 = sqrt(int2d(Mesh)((u-uK)^2));
+    cout << i << " " << errorL2 << endl;
+    uK=u;
+}

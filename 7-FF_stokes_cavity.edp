@@ -1,0 +1,62 @@
+load "iovtk"
+
+//Parameters
+real uIn = 1.;
+real Mu = 1.;
+
+func fx = 0.;
+func fy = 0.;
+
+//Mesh
+int nn = 30;	//Mesh quality
+real L = 1.;	//Pipe length
+real D = 1.;	//Pipe height
+int Wall = 1;	//Pipe wall label
+int Inlet = 2;	//Pipe inlet label
+int Outlet = 3;	//Pipe outlet label
+
+border b1(t=0., 1.){x=L*t; y=0.; label=Wall;};
+border b2(t=0., 1.){x=L; y=D*t; label=Wall;};
+border b3(t=0., 1.){x=L-L*t; y=D; label=Inlet;};
+border b4(t=0., 1.){x=0.; y=D-D*t; label=Wall;};
+
+int nnL = max(2., L*nn);
+int nnD = max(2., D*nn);
+
+mesh Th = buildmesh(b1(nnL) + b2(nnD) + b3(nnL) + b4(nnD));
+
+//Fespace
+fespace Uh(Th, [P2, P2]);
+Uh [ux, uy];
+Uh [vx, vy];
+
+fespace Ph(Th, P1);
+Ph p;
+Ph q;
+
+//Macro
+macro Gradient(u) [dx(u), dy(u)] //
+macro Divergence(ux, uy) (dx(ux) + dy(uy)) //
+
+//Problem
+problem S ([ux, uy, p],[vx, vy, q])
+	= int2d(Th)(
+		  Mu * (
+			  Gradient(ux)' * Gradient(vx)
+			+ Gradient(uy)' * Gradient(vy)
+		)
+		- p * Divergence(vx, vy)
+		- Divergence(ux, uy) * q
+	)
+	- int2d(Th)(
+		  fx*vx + fy*vy
+	)
+	+ on(Inlet, ux=uIn, uy=0.)
+	+ on(Wall, ux=0., uy=0.)
+	;
+
+S;
+
+//Save
+int[int] orderOut = [1, 1, 1];
+savevtk("stokes.vtu", Th, ux, uy, p, dataname="u v p", order=orderOut);
