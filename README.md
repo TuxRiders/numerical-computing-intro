@@ -26,10 +26,10 @@ The mentioned repositores are embedded (and then partially modified) as [git sub
 ### Finite difference method for (partial) differential equations
 
 9. Initial-value problems: solving nonlinear ordinary differential equations
-  * [Introducing the problem: the phugoid model of glider flight](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/01_phugoid/01_01_Phugoid_Theory.ipynb)
-  * [Solving a single-equation model of oscillation using Euler's method](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/01_phugoid/01_02_Phugoid_Oscillation.ipynb)
-  * [Solving a full phugoid model using vectorized Euler's method](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/01_phugoid/01_03_PhugoidFullModel.ipynb)
-  * [Higher-order methods: modified Euler and Runge-Kutta](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/01_phugoid/01_04_Second_Order_Methods.ipynb)
+    * [Introducing the problem: the phugoid model of glider flight](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/01_phugoid/01_01_Phugoid_Theory.ipynb)
+    * [Solving a single-equation model of oscillation using Euler's method](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/01_phugoid/01_02_Phugoid_Oscillation.ipynb)
+    * [Solving a full phugoid model using vectorized Euler's method](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/01_phugoid/01_03_PhugoidFullModel.ipynb)
+    * [Higher-order methods: modified Euler and Runge-Kutta](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/01_phugoid/01_04_Second_Order_Methods.ipynb)
 10. General aspects of numerical solution of partial differential equations
     * [Discretizing equations: 1D linear convection](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/02_spacetime/02_01_1DConvection.ipynb)
     * [Stability and the CFL condition](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/2-finite-difference-method/lessons/02_spacetime/02_02_CFLCondition.ipynb)
@@ -54,3 +54,13 @@ The mentioned repositores are embedded (and then partially modified) as [git sub
 
 
 ### Finite element method for (partial) differential equations
+
+14. [Quick overview of the finite element method](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/1-%20overview.ipynb)
+15. [Function approximation by global functions](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/2-%20approx.ipynb)
+16. [Function approximation by finite elements](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/3-%20approx-fe.ipynb)
+17. [Variational formulations with global basis functions](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/4-%20varform.ipynb)
+18. [Variational formulations with finite elements](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/5-%20varform-fe.ipynb)
+19. [Time-dependent variational forms](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/6-femtime.ipynb)
+20. [Variational forms for systems of partial differential equations](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/7-%20femsys.ipynb)
+21. [Dealing with nonlinearity](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/8-%20nonlin.ipynb)
+22. [Iterative solvers and preconditioning](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/9-%20cg.ipynb)
