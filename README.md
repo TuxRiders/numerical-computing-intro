@@ -1,4 +1,4 @@
-# A (not so) short introduction to numerical computing
+# An easy (but not so short) introduction to applied numerical computing
 
 This repository contains the materials used during the numerical computing series in TuxRiders. The materials are obtained from the following sources with very minor changes and adaptation:
 
