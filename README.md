@@ -20,6 +20,7 @@ The mentioned repositores are embedded (and then partially modified) as [git sub
 4. [SciPy - Library of scientific algorithms for Python](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/1-scientific-programming/Lecture-3-Scipy.ipynb)
 5. [matplotlib - 2D and 3D plotting in Python](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/1-scientific-programming/Lecture-4-Matplotlib.ipynb)
 6. [Sympy - Symbolic algebra in Python](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/1-scientific-programming/Lecture-5-Sympy.ipynb)
+    * Extra: [SymPy example - mass transfer in a cellular construct](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/extras/SymPy-Mass-Transfer-Cellular-Construct.ipynb)
 7. [Tools for high-performance computing (HPC) applications](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/1-scientific-programming/Lecture-6B-HPC.ipynb)
 8. [Revision control software](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/1-scientific-programming/Lecture-7-Revision-Control-Software.ipynb)
 
