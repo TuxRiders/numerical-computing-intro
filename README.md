@@ -1,6 +1,6 @@
 # An easy (but not so short) introduction to applied numerical computing
 
-This repository contains the materials used during the numerical computing series in TuxRiders. The materials are obtained from the following sources with very minor changes and adaptation:
+This repository contains the materials used for the [applied numerical computing series in TuxRiders](https://www.youtube.com/playlist?list=PL6fjYEpJFi7UMDXtNiaF3eLlOKAM8Lrkf). The materials are obtained from the following sources with very minor changes and adaptation:
 
 1. [Lectures on scientific computing with Python](https://github.com/jrjohansson/scientific-python-lectures) by Robert Johansson
 2. [Practical Numerical Methods with Python](https://github.com/numerical-mooc/numerical-mooc) by Lorena A. Barba, Ian Hawke, and Bernard Knaepen
