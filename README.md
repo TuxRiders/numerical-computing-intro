@@ -58,10 +58,18 @@ The mentioned repositores are embedded (and then partially modified) as [git sub
 
 14. [Quick overview of the finite element method](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/1-%20overview.ipynb)
 15. [Function approximation by global functions](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/2-%20approx.ipynb)
-16. [Function approximation by finite elements](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/3-%20approx-fe.ipynb)
+16. [Function approximation by finite elements](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/3-%20approx-fe.ipynb)\
+[FreeFEM code - function approximation](https://github.com/TuxRiders/numerical-computing-intro/blob/master/3-finite-element-method/3-FF_func_approx.edp)
 17. [Variational formulations with global basis functions](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/4-%20varform.ipynb)
-18. [Variational formulations with finite elements](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/5-%20varform-fe.ipynb)
-19. [Time-dependent variational forms](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/6-femtime.ipynb)
-20. [Variational forms for systems of partial differential equations](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/7-%20femsys.ipynb)
-21. [Dealing with nonlinearity](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/8-%20nonlin.ipynb)
-22. [Iterative solvers and preconditioning](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/9-%20cg.ipynb)
+18. [Variational formulations with finite elements](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/5-%20varform-fe.ipynb)\
+[FreeFEM code - variational formulation and solution of Poisson equation](https://github.com/TuxRiders/numerical-computing-intro/blob/master/3-finite-element-method/5-FF_poisson.edp)
+19. [Time-dependent variational forms](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/6-femtime.ipynb)\
+[FreeFEM code - time dependent diffusion equation with variable diffusion coefficient](https://github.com/TuxRiders/numerical-computing-intro/blob/master/3-finite-element-method/6-FF_time_diffusion.edp)
+20. [Variational forms for systems of partial differential equations](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/7-%20femsys.ipynb)\
+[FreeFEM code - Stokes equations for lid cavity problem](https://github.com/TuxRiders/numerical-computing-intro/blob/master/3-finite-element-method/7-FF_stokes_cavity.edp)
+21. [Dealing with nonlinearity](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/8-%20nonlin.ipynb)\
+[FreeFEM code - Picard method for nonlinear Poisson equation](https://github.com/TuxRiders/numerical-computing-intro/blob/master/3-finite-element-method/8-FF_picard.edp) \
+[FreeFEM code - Picard-relaxation for nonlinear Poisson equation](https://github.com/TuxRiders/numerical-computing-intro/blob/master/3-finite-element-method/8-FF_picard_relaxation.edp) \
+[FreeFEM code - Newton method for nonlinear Poisson equation](https://github.com/TuxRiders/numerical-computing-intro/blob/master/3-finite-element-method/8-FF_newton.edp)
+22. [Iterative solvers and preconditioning](https://nbviewer.jupyter.org/github/TuxRiders/numerical-computing-intro/blob/main/3-finite-element-method/9-%20cg.ipynb)\
+[FreeFEM code - high-performance solution of Poisson equation using PETSc](https://github.com/TuxRiders/numerical-computing-intro/blob/master/3-finite-element-method/9-FF_preconditioning_hpc.edp)
